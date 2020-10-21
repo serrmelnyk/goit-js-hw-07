@@ -26,43 +26,39 @@
 
 // Решение:
 
-const input = document.querySelector('[type="number"]');
-const btnRender = document.querySelector('[data-action="render"]');
-const btnDestroy = document.querySelector('[data-action="destroy"]');
-const boxes = document.querySelector("#boxes");
+const btnCreateEl = document.querySelector('button[data-action="render"]');
+const btnClearEl = document.querySelector('button[data-action="destroy"]');
+const inputEl = document.querySelector('#controls input');
+let inputValue = 0;
+const boxesWrapperEl = document.querySelector('#boxes');
 
-function BtnMakeBoxes() {
-  boxes.innerHTML = "";
-
-  const num = input.value;
-  const items = [];
-
-  for (let i = 1; i <= num; i += 1) {
-    const createDiv = document.createElement("div");
-
-    createDiv.style.backgroundColor = randomColorRGB();
-    createDiv.style.width = i * 10 + 20 + "px";
-    createDiv.style.height = i * 10 + 20 + "px";
-
-    items.push(createDiv);
-  }
-
-  boxes.append(...items);
-}
-
-const BtnClearBoxes = () => {
-  boxes.innerHTML = "";
+const randomRgbColor = () => {
+  const firstRandomColor = Math.round(Math.random() * 255);
+  const secondRandomColor = Math.round(Math.random() * 255);
+  const thirdRandomColor = Math.round(Math.random() * 255);
+  return `rgb(${firstRandomColor},${secondRandomColor},${thirdRandomColor})`;
 };
 
-function randomColorRGB() {
-  const random = (min, max) => Math.round(Math.random() * (max - min) + min);
-
-  const red = random(0, 255);
-  const green = random(0, 255);
-  const blue = random(0, 255);
-
-  return `rgb(${red},${green},${blue})`;
+function createBoxes(amount) {
+  const array = new Array(amount);
+  const boxes = [...array];
+  const boxesMarkup = boxes
+    .map(
+      (el, i) =>
+        `<div style="height: ${i * 10 + 30}px; width: ${
+          i * 10 + 30
+        }px; background-color:${randomRgbColor()};"></div>`,
+    )
+    .join('');
+  boxesWrapperEl.innerHTML = boxesMarkup;
 }
 
-btnRender.addEventListener("click", BtnMakeBoxes);
-btnDestroy.addEventListener("click", BtnClearBoxes);
+btnCreateEl.addEventListener('click', function () {
+  createBoxes(Number(inputEl.value));
+});
+
+function destroyBoxes() {
+  boxesWrapperEl.innerHTML = '';
+}
+
+btnClearEl.addEventListener('click', destroyBoxes);

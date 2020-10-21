@@ -31,18 +31,16 @@
 
 //  Решение:
 
-const input = document.querySelector("#validation-input");
+const input = document.querySelector('#validation-input');
 
-const inputBorder = function (event) {
-  input.classList.add("invalid");
-
-  switch (event.currentTarget.value.length) {
-    case Number(event.target.dataset.length):
-      input.classList.replace("invalid", "valid");
-      break;
-    case 0:
-      input.classList.remove("invalid");
-      break;
+input.addEventListener('blur', function () {
+  const inputValidLength = Number(input.getAttribute('data-length'));
+  const inputCheckLength = input.value.length;
+  if (inputValidLength === inputCheckLength) {
+    input.classList.add('valid');
+    input.classList.remove('invalid');
+  } else {
+    input.classList.add('invalid');
+    input.classList.remove('valid');
   }
-};
-input.addEventListener("input", inputBorder);
+});
